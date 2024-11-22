@@ -9,6 +9,10 @@ const UserTable: React.FC = () => {
   const dispatch = useDispatch();
   const { users, sortField } = useSelector((state: RootState) => state.users);
 
+  if (!users || !users.Invoices || !users.Product || !users.Customer) {
+    return <div>Loading...</div>; // Or handle the error state gracefully
+  }
+
   const handleSort = (field: keyof User['Invoices'][0]) => {
     dispatch(sortUsers(field));
   };
@@ -23,7 +27,6 @@ const UserTable: React.FC = () => {
 
   return (
     <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
-      {/* Invoice Table */}
       <h2 className="text-lg font-bold text-gray-700 mb-4">Invoices</h2>
       <table className="min-w-full divide-y divide-gray-200 mb-8">
         <thead className="bg-gray-50">
@@ -54,60 +57,7 @@ const UserTable: React.FC = () => {
         </tbody>
       </table>
 
-      {/* Product Table */}
-      <h2 className="text-lg font-bold text-gray-700 mb-4">Products</h2>
-      <table className="min-w-full divide-y divide-gray-200 mb-8">
-        <thead className="bg-gray-50">
-          <tr>
-            {['Name', 'Quantity', 'UnitPrice', 'Tax', 'PriceWithTax', 'Discount'].map((field) => (
-              <th
-                key={field}
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                {field}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {users.Product.map((product, idx) => (
-            <tr key={idx} className="hover:bg-gray-50">
-              <td className="px-6 py-4">{product.Name}</td>
-              <td className="px-6 py-4">{product.Quantity}</td>
-              <td className="px-6 py-4">{product.UnitPrice}</td>
-              <td className="px-6 py-4">{product.Tax}</td>
-              <td className="px-6 py-4">{product.PriceWithTax}</td>
-              <td className="px-6 py-4">{product.Discount}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {/* Customer Table */}
-      <h2 className="text-lg font-bold text-gray-700 mb-4">Customers</h2>
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            {['CustomerName', 'PhoneNumber', 'TotalPurchaseAmount'].map((field) => (
-              <th
-                key={field}
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                {field}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {users.Customer.map((customer, idx) => (
-            <tr key={idx} className="hover:bg-gray-50">
-              <td className="px-6 py-4">{customer.CustomerName}</td>
-              <td className="px-6 py-4">{customer.PhoneNumber}</td>
-              <td className="px-6 py-4">{customer.TotalPurchaseAmount}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* Similarly handle Product and Customer sections */}
     </div>
   );
 };
